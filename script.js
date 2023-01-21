@@ -10,12 +10,12 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnSrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 const allButons = document.getElementsByClassName('btn');
-const header = document.querySelector('.header');
 const allSelections = document.querySelectorAll('.section');
 const nav = document.querySelector('.nav');
 const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
+const header = document.querySelector('.header');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -210,6 +210,29 @@ const handleHover = function (e) {
 nav.addEventListener('mouseover', handleHover.bind(0.5));
 nav.addEventListener('mouseout', handleHover.bind(1));
 
+//Sticky navigation
+//const initialCords = section1.getBoundingClientRect();
+//
+//window.addEventListener('scroll', function () {
+//  if (window.scrollY > initialCords.top) nav.classList.add('sticky');
+//  else nav.classList.remove('sticky');
+//});
+
+const navHeight = nav.getBoundingClientRect().height;
+const sticyNav = function (entries) {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver(sticyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+});
+
+headerObserver.observe(header);
 //nav.addEventListener('mouseover', function (e) {
 //  if (e.target.classList.contains('nav__link')) {
 //    const link = e.target;
